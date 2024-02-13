@@ -1,0 +1,17 @@
+@import "colors";
+
+.MuiSvgIcon-colorSuccess {
+  color: $color-icon-success;
+}
+
+.MuiSvgIcon-colorWarning {
+  color: $color-icon-warning;
+}
+
+.MuiSvgIcon-colorError {
+  color: $color-icon-danger;
+}
+
+.MuiSvgIcon-colorAction {
+  color: $color-grey-darker;
+}

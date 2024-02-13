@@ -1,0 +1,15 @@
+@import "colors";
+
+a {
+  color: $color-link;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none; // It's fine to do that, as long as a style for `:focus` is defined
+  }
+}

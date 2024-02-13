@@ -1,0 +1,60 @@
+@import "colors";
+@import "sizes";
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.MuiInputLabel-root {
+  color: $color-input-placeholder;
+}
+
+.MuiOutlinedInput-root {
+  &:not(.Mui-error),
+  &.Mui-disabled,
+  &:not(.Mui-error):hover,
+  &:not(.Mui-error).Mui-focused {
+    .MuiOutlinedInput-notchedOutline {
+      border-color: $color-border;
+    }
+  }
+
+  &:not(.Mui-disabled):hover .MuiOutlinedInput-notchedOutline {
+    border-width: 2px;
+  }
+}
+
+// Focused
+
+.MuiOutlinedInput-root:not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: $color-input-border-focused;
+}
+
+// Disabled
+
+.MuiOutlinedInput-input.Mui-disabled {
+  background-color: $color-input-bg-disabled;
+}
+
+.MuiInputBase-input.MuiOutlinedInput-input {
+  padding: 0.2em;
+}
+
+.InputWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: $gap-sm;
+  align-items: center;
+}
+
+.PercentInput {
+  max-width: 5em;
+  min-width: 5em;
+}
+
+.NumberInput {
+  max-width: 3em;
+  min-width: 3em;
+}

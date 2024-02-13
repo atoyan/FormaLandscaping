@@ -1,0 +1,20 @@
+@import "colors";
+
+// These classes are designed to be versatile, and can be applied to a variety of elements
+
+.StandardBorder {
+  border: 1px solid $color-border;
+  border-radius: 4px;
+}
+
+// Layout for two elements (text field, radio buttons, buttons etc) of same size, positioned side by side
+.DoubleElement {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+}
+
+.Disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

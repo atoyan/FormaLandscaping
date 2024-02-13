@@ -1,0 +1,118 @@
+@import "colors";
+
+.MuiTable-root {
+  border: 1px solid $color-border;
+}
+
+// Header
+
+.MuiTableCell-head {
+  padding: 3px 9px;
+
+  &[aria-sort] {
+    font-weight: bold;
+  }
+
+  // Compensating for the icon size, so as to have the header text centered
+  &.MuiTableCell-alignCenter > span > svg {
+    margin-right: -22px;
+  }
+}
+
+.MuiTableHead-root > tr {
+  background-color: $color-table-header;
+}
+
+// Body
+
+.MuiTableCell-body {
+  border-bottom: none;
+  border-top: 1px solid $color-border;
+  font-size: 15px;
+  padding: 9px;
+
+  &.WithIcon {
+    position: relative;
+
+    > svg,
+    > .MuiIconButton-root {
+      position: absolute;
+      right: 10px;
+    }
+
+    > svg {
+      top: 8px;
+    }
+
+    > .MuiIconButton-root {
+      top: 5px;
+    }
+  }
+}
+
+// Hover
+
+.MuiTableRow-hover {
+  &:not(.NonClickable) {
+    cursor: pointer;
+  }
+
+  &[class$="-MuiTableRow-root"]:hover {
+    background-color: $color-row-bg-hover;
+  }
+}
+
+// Collapse functionality
+
+.MuiTableRow-root.Expanded,
+.MuiTableRow-root.Expanded + .MuiTableRow-root {
+  background-color: $color-offset-bg;
+}
+
+.MuiCollapse-root .MuiTable-root {
+  margin-bottom: 16px;
+
+  > .MuiTableHead-root > tr {
+    background-color: $color-subtable-header;
+  }
+
+  > .MuiTableBody-root > tr:not(:hover) {
+    background-color: $color-app-bg;
+  }
+}
+
+.CollapseTableCell {
+  padding: 0 16px;
+  border: none;
+
+  tbody > tr:last-child > td {
+    border-bottom: none;
+  }
+}
+
+.MuiTableCell-root.MuiTableCell-paddingCheckbox {
+  padding: 0 0 0 8px;
+}
+
+// Pagination
+
+.MuiTablePagination-root {
+  overflow: unset; // To avoid vertical scrollbar due to negative margins on `.TablePaginationActions-root`
+  position: relative; // Absolutely-positioned child
+
+  > .MuiTablePagination-toolbar {
+    position: absolute;
+    top: -32px;
+    right: 0;
+
+    min-height: unset; // For thin component
+
+    > .MuiTablePagination-selectLabel {
+      margin: 0; // For thin component
+    }
+  }
+
+  .MuiTablePagination-displayedRows {
+    margin: 0;
+  }
+}

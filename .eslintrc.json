@@ -1,0 +1,70 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    // "react-app",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "eslint-config-prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks"],
+  "rules": {
+    "quotes": "off",
+    "linebreak-style": ["error", "windows"],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
+    "react/jsx-props-no-spreading": "warn",
+    "react/no-unescaped-entities": "off",
+    "no-shadow": "off",
+    "comma-dangle": "off",
+    "no-use-before-define": "off",
+    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+    "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" }],
+    "max-len": ["warn", { "code": 125 }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "import/prefer-default-export": "off",
+    "react/prop-types": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "react/require-default-props": "off"
+  },
+  "overrides": [
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": ["error", { "ts-ignore": "allow-with-description" }],
+        "@typescript-eslint/quotes": ["error", "double"],
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/comma-dangle": "error",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          { "allowExpressions": true, "allowTypedFunctionExpressions": true }
+        ]
+      }
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  }
+}

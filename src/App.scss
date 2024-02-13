@@ -1,0 +1,40 @@
+@import "css/colors";
+@import "css/sizes";
+
+html {
+  // Always display the vertical scrollbar
+  overflow-y: hidden;
+  font-size: 0.75em;
+}
+
+body {
+  background-color: $color-app-bg;
+  color: $color-body-text;
+  font-family: "Proxima Nova", sans-serif;
+  // Border-box everything by default
+  box-sizing: border-box;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+// To avoid these elements to bleed through the parent
+img,
+iframe,
+embed,
+video {
+  max-width: 100%;
+}
+
+.ViewContent.Narrow {
+  max-width: $content-width-narrow;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.DisplayNone {
+  display: none;
+}

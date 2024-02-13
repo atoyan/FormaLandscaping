@@ -1,0 +1,23 @@
+@import "../css/colors";
+@import "../css/sizes";
+
+.ViewContent.MainPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  gap: $gap-lg;
+
+  > section {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  > hr {
+    width: 95%;
+    border: none;
+    height: 0.5px;
+    background-color: $color-border;
+    margin: 0;
+  }
+}

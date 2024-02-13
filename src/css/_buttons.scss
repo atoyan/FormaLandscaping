@@ -1,0 +1,40 @@
+@import "colors";
+
+.MuiButton-contained,
+.MuiButton-contained:hover,
+.MuiButton-contained:active {
+  box-shadow: none;
+}
+
+// Primary
+.MuiButton-containedPrimary.Mui-disabled {
+  background-color: $color-btn-primary-disabled;
+  color: $color-btn-text-primary-disabled;
+}
+
+// Secondary
+.MuiButton-containedSecondary {
+  &.Mui-disabled {
+    background-color: $color-btn-secondary;
+    color: $color-btn-text-secondary-disabled;
+  }
+
+  &:not(.Mui-disabled):hover {
+    background-color: $color-btn-secondary-hover;
+  }
+}
+
+// Danger
+.MuiButton-containedError {
+  background-color: $color-btn-danger;
+}
+
+// Icon-only
+.MuiIconButton-root:hover {
+  background-color: $color-offset-bg;
+}
+
+// With loading icon
+.MuiButton-contained .MuiCircularProgress-root {
+  margin-right: 8px;
+}

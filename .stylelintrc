@@ -1,0 +1,19 @@
+{
+  "customSyntax": "postcss-scss",
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-css-modules"
+  ],
+  "rules": {
+    "at-rule-empty-line-before": null,
+    "custom-property-empty-line-before": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "declaration-empty-line-before": null,
+    "max-empty-lines": 3,
+    "max-nesting-depth": 5,
+    "no-descending-specificity": null,
+    "property-case": null,
+    "selector-class-pattern": null,
+    "scss/dollar-variable-empty-line-before": null
+  }
+}

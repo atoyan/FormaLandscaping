@@ -1,0 +1,42 @@
+@import "colors";
+
+.TabContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &.AlignedWithContent {
+    margin-bottom: 4px;
+  }
+
+  > .Tab.active {
+    display: flex;
+    align-items: center;
+    border-bottom: 3.5px solid $color-glacier-1;
+    border-radius: 0px;
+    padding: 7px 6px 4px 6px;
+  }
+
+  > button.Tab.active:hover {
+    background-color: unset;
+  }
+
+  > a.Tab {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: $color-tab-text;
+    padding: 10px 8px;
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+
+    &:not(.active):hover {
+      background-color: $color-tab-bg-hover;
+    }
+  }
+}

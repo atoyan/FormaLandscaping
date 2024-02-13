@@ -1,0 +1,9 @@
+node_modules/
+build/
+.prettierrc
+.eslintrc.json
+.stylelintrc
+*-env.d.ts
+vite.config.ts
+*.css
+*.svg

@@ -1,0 +1,5 @@
+@import "colors";
+
+@mixin drop-shadow {
+  box-shadow: 0 2px 8px $color-drop-shadow; // offset-x, offset-y, blur-radius, color
+}

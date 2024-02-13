@@ -1,0 +1,22 @@
+@import "sizes";
+
+.FlexBox-Row {
+  display: flex;
+  flex-direction: row;
+}
+
+.FlexBox-Column {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-md;
+}
+
+// Flex item will adjust width/height to the content inside
+.FlexContent {
+  flex: 0 0 auto;
+}
+
+// Flex item will take the reaming space of the flexbox. Meaning total width/height minus the other flex items
+.FlexRemaining {
+  flex: 1 1 auto;
+}

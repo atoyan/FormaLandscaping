@@ -1,0 +1,21 @@
+@import "sizes";
+
+.MuiFormControlLabel-root {
+  margin: 0;
+}
+
+.MuiFormControlLabel-root.Checkbox,
+.MuiMenuItem-root > .MuiCheckbox-root {
+  margin: 0;
+}
+
+.MuiButtonBase-root.MuiCheckbox-root {
+  margin: $gap-sm;
+  padding: 0;
+}
+
+.MuiFormControlLabel-root.Checkbox svg,
+.MuiCheckbox-root > svg {
+  width: 20px;
+  height: 20px;
+}

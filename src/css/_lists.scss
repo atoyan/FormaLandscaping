@@ -1,0 +1,65 @@
+@import "colors";
+
+@mixin unstyled-list {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding-inline-start: 17px; // Removes space left of bullet/number
+}
+
+ol {
+  padding: 4px;
+
+  > li {
+    margin-left: 16px;
+  }
+}
+
+ul {
+  &.Unstyled,
+  &.StandardBorder,
+  &.Cards {
+    @include unstyled-list;
+  }
+
+  &.StandardBorder {
+    border-radius: 4px;
+
+    > li {
+      padding: 16px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $color-border;
+      }
+    }
+  }
+
+  &.Cards {
+    display: flex;
+    gap: 16px;
+
+    > li {
+      border: 1px solid $color-border;
+      border-radius: 4px;
+      padding: 16px;
+    }
+  }
+}
+
+li[role="checkbox"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+// MUI lists
+
+.MuiPaper-elevation > ul {
+  padding: 0;
+}
+
+.MuiMenu-list > hr {
+  border: 1px solid $color-border-secondary;
+}

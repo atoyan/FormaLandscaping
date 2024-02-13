@@ -1,0 +1,10 @@
+@import "colors";
+
+.MuiTooltip-tooltip {
+  font-size: 13px;
+  background-color: $color-tooltip-bg;
+
+  > .MuiTooltip-arrow {
+    color: $color-tooltip-bg;
+  }
+}

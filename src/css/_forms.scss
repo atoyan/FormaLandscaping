@@ -1,0 +1,12 @@
+.FieldAndButton {
+  display: flex;
+  align-items: flex-start;
+
+  > label {
+    margin: 11px 8px 0 0;
+  }
+
+  > .MuiIconButton-sizeSmall {
+    margin-top: 5px;
+  }
+}
