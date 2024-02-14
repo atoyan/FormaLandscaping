@@ -5,7 +5,9 @@ import * as THREE from "three";
 import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from "three-mesh-bvh";
 import { AnalysisGroundGrid } from "forma-embedded-view-sdk/analysis";
 import { Footprint } from "forma-embedded-view-sdk/geometry";
+import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import useFootprint from "../hooks/useFootprint";
+
 // @ts-ignore Speed up raycasting using https://github.com/gkjohnson/three-mesh-bvh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 // @ts-ignore Speed up raycasting using https://github.com/gkjohnson/three-mesh-bvh
@@ -30,6 +32,10 @@ export function TerrainPage(): JSX.Element {
   const minZRef = useRef<number>(0);
   const SCALE = 0.5;
   const steepness = 4;
+  const geometryRef = useRef<THREE.BufferGeometry>();
+  const meshRef = useRef<THREE.Mesh>();
+  const trianglesRef = useRef<Float32Array>();
+  const limitsRef = useRef<PolygonLimits>();
 
   function pointInPolygon(polygon: number[][], point: number[]): boolean {
     // A point is in a polygon if a line from the point to infinity crosses the polygon an odd number of times
@@ -53,6 +59,78 @@ export function TerrainPage(): JSX.Element {
     return odd;
   }
 
+  function recalculateUVs(position: Float32Array, bboxLocal: [number, number][]) {
+    const offset_x = -bboxLocal[0][0];
+    const offset_y = -bboxLocal[0][1];
+    const width = bboxLocal[1][0] - bboxLocal[0][0];
+    const height = bboxLocal[1][1] - bboxLocal[0][1];
+
+    const newUvs = new Array((2 * position.length) / 3);
+    for (let i = 0; i < position.length / 3; i++) {
+      newUvs[2 * i] = (position[3 * i] + offset_x) / width;
+      newUvs[2 * i + 1] = 1 - (position[3 * i + 1] + offset_y) / height;
+    }
+    return new Float32Array(newUvs);
+  }
+
+  function repair(bbox: [number, number][], geometry: THREE.BufferGeometry): void {
+    const uvs = recalculateUVs(geometry.attributes.position.array as Float32Array, bbox);
+    geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+  }
+
+  const updateTerrain = async (terrainMesh: THREE.Mesh): Promise<void> => {
+    const bbox = await Forma.terrain
+      .getBbox()
+      .then((bbox) => [[bbox.min.x, bbox.min.y] as [number, number], [bbox.max.x, bbox.max.y] as [number, number]]);
+
+    const glb: ArrayBuffer = await new Promise((resolve, reject) => {
+      if (terrainMesh != null) {
+        const exportmesh = new THREE.Mesh(terrainMesh.geometry.clone());
+        repair(bbox, exportmesh.geometry);
+        exportmesh.geometry.rotateX(-Math.PI / 2);
+        new GLTFExporter().parse(
+          exportmesh,
+          (res) => {
+            resolve(res as ArrayBuffer);
+          },
+          reject,
+          { binary: true },
+        );
+      }
+    });
+    console.log("🚀 ~ glb:", glb);
+    await Forma.proposal.replaceTerrain({ glb });
+  };
+
+  const loopTriangles = async (): Promise<void> => {
+    if (!trianglesRef?.current) {
+      return;
+    }
+    const triangles = trianglesRef.current;
+    console.log("🚀 ~ trianglesRef.current:", trianglesRef.current);
+    console.log("🚀 ~ limitsRef.current!.coordinates:", limitsRef.current!.coordinates);
+    for (let i = 0; i < triangles.length / 3; i++) {
+      const x = triangles[i * 3];
+      const y = triangles[i * 3 + 1];
+      if (pointInPolygon(limitsRef.current!.coordinates, [x, y])) {
+        triangles[i * 3 + 2] = 1000;
+        console.log("🚀 ~ triangles[i * 3 + 2]:", triangles[i * 3 + 2]);
+      }
+    }
+    console.log("🚀 ~ triangles:", triangles.filter((x) => x === 1000).length);
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(triangles, 3));
+    const material = new THREE.MeshBasicMaterial();
+    material.side = THREE.DoubleSide;
+
+    // @ts-ignore Creates a bounding tree for the geometry
+    geometry.computeBoundsTree();
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.geometry.attributes.position.needsUpdate = true;
+    updateTerrain(mesh);
+  };
+
   const getScene = (triangles: Float32Array): THREE.Scene => {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(triangles, 3));
@@ -65,7 +143,8 @@ export function TerrainPage(): JSX.Element {
     const scene = new THREE.Scene();
     const copy = mesh.clone();
     scene.add(mesh);
-    console.log("🚀 ~ triangles:", triangles);
+    meshRef.current = mesh;
+    geometryRef.current = geometry;
     return scene;
   };
 
@@ -77,7 +156,8 @@ export function TerrainPage(): JSX.Element {
     const terrainTriangles = await Forma.geometry.getTriangles({
       path: terrain,
     });
-
+    trianglesRef.current = terrainTriangles;
+    loopTriangles();
     return getScene(terrainTriangles);
   };
 
@@ -91,6 +171,9 @@ export function TerrainPage(): JSX.Element {
     const threshold = Math.atan2(1, steepness);
     const { height, width, siteLimits, minX, maxY } = sites;
     const mask: Float32Array = new Float32Array(width * height).fill(NaN);
+    const minZ = minZRef.current;
+    const geometry = geometryRef.current;
+    const arr = geometry?.toNonIndexed().getAttribute("position").array as Float32Array;
 
     for (let rowIndex = 0; rowIndex < height; rowIndex++) {
       origin.y = maxY - SCALE / 2 - SCALE * rowIndex;
@@ -244,6 +327,7 @@ export function TerrainPage(): JSX.Element {
       coordinates,
     };
     minZRef.current = minZ;
+    limitsRef.current = limits;
     await drawBuildingPoly(limits);
     return limits;
     //     return triangles.reduce((acc, coord, index) => {
